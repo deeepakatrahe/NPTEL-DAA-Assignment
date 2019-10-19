@@ -1,0 +1,61 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    int n,p,f,m[5000],e[5000],pos,t,pos1,i,j,v,s,l;
+    cin>>n>>p>>f;
+    for( i=0;i<n;++i)
+    {
+        cin>>m[i];
+    }
+    for( i=0;i<n;++i)
+    {
+        cin>>e[i];
+    }
+
+
+    for( i=0;i<n;++i)
+    {
+        s=m[i];
+        l=e[i];
+        pos=i;
+        pos1=i;
+        for(j=i+1;j<n;++j)
+        {
+            if(s>m[j])
+               {
+                s=m[j];
+                pos=j;
+               }
+             if(e[j]>l)
+                 {
+                     l=e[j];
+                     pos1=j;
+                 }
+
+        }
+        t=m[i];
+        m[i]=m[pos];
+        m[pos]=t;
+
+        t=e[i];
+        e[i]=e[pos1];
+        e[pos1]=t;
+
+    }
+
+    v=0;
+    for(i=0;i<n;i++)
+    {
+
+        if((m[i]+e[i])>p)
+            v+=(m[i]+e[i])-p;
+    }
+
+   
+    cout<<v*f<<"\n";
+
+return 0;
+}
