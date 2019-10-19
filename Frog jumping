@@ -1,0 +1,95 @@
+
+
+#include <iostream>
+#include <queue>
+void BFS(int start,bool **a,int nodes,int *distance)
+{
+	std::queue <int>q;
+	distance[start] = 0;
+	q.push(start);
+
+	bool flag = false;
+	while(!q.empty())
+	{
+		int curr = q.front();
+		q.pop();
+		for(int j = 0;j < nodes; j++)
+		{
+			if(a[curr][j] == true && distance[j] == -1)
+			{
+				distance[j] = 1 + distance[curr];
+				if(j == nodes - 1)
+				{
+					flag = true;
+					break;
+				}
+				q.push(j);
+			}
+		}
+		if(flag)
+			break;
+	}
+}
+
+int roofValue(int x, int y)
+{
+	if(x % y == 0)
+		return x/y;
+	else
+		return (x/y + 1);
+}
+
+bool** dynamic2DString(int row,int column)
+{
+	bool** array = new bool*[row];
+	int i;
+	for(i = 0;i < row;i++)
+		array[i] = new bool[column];
+	return array;
+}
+
+int main()
+{
+	int m,n;
+	std::cin >> m >> n;
+	
+	//	adjacency matrix formation
+	int v = m * n;
+
+	bool **adj = dynamic2DString(v,v);
+
+
+	for(int i = 0;i < v; i++)
+		for(int j = 0;j < v; j++)
+			adj[i][j] = 0;
+
+
+	int x;
+	for(int i = 0;i < v; i++)
+	{
+		std::cin >> x;
+		for(int j = 1;j <= x; j++)
+		{
+			if(i + 1 + j <= roofValue(i+1, n) * n)
+				adj[i][i+j] = 1;
+			else
+				break;
+		}
+	}
+	for(int i = 0;i < v; i++)
+	{
+		std::cin >> x;
+		for(int j = 1;j <= x; j++)
+			if(i + (n*j) < v)
+				adj[i][i + (n*j)] = 1;
+	}
+
+	//	distance array formed(visited)
+	int distance[v];
+
+	for(int i = 0;i < v; i++)
+		distance[i] = -1;
+	BFS(0, adj, v, distance);
+	std::cout<<distance[v-1]<<std::endl;
+	return 0;
+}
